@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display</title>
+</head>
+
+<body>
+  <!-- <h2 id="">Selection(s) : </h2>
+  <p>
+    {{ selection }}
+  </p> -->
+  <h2>Selection(s) : 
+    {% for select in selection %} 
+    {{select}}, 
+    {% endfor%}
+  </h1>
+  <div id ='response'>
+    <p>Recommendations: </p>
+    <ul>
+       {% for recomm in recommendations %}
+          <li>{{recomm}}</li>
+       {% endfor %}
+    </ul>
+  </br>
+    <form id='return' action="/">
+      <input type=submit value="Return to index">
+    </form>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <p>Enter an artist :</p>
+    <p>
+      <FORM name="Item_1" action="http://localhost:5000/page2" method="post">
+        <input name="research" size="5">
+        <input type="submit">
+      </FORM>
+    </p> -->
+
+  <!-- <h1 id="title_app">Choose an Artist :</h1>
+  <form action="" method="POST"> 
+    <select name="artist_name" id="cars" multiple>
+      {% for a in artist_name %}
+      <option value ={{ a }}>{{ a }}</option>
+      {% endfor %}
+    </select>
+    <br><br>
+    <input type="submit" value="Submit">
+  </form>
+  <h1 id="title_app">Here's your result :</h1>
+  <section id = "res_pred"></section> -->

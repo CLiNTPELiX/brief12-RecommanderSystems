@@ -1,0 +1,12 @@
+keyword = "mich"
+      {% if artist_names.startswith(keyword):
+      try:
+        return float(artist_names.split(',')[1])
+      except ValueError:
+      # treat the error
+      %}
+
+       {% if for a in artist_names %}
+      <br>
+      <li value ={{ a }}>{{ a }}</li>
+      {% endfor %}
