@@ -1,11 +1,6 @@
 from flask import Flask, request, url_for, render_template, redirect
 from rec_app.process import *
 
-# ap = db ()
-# ap = preprocess(ap)
-# artistNames= ap.sort_values("artistID")["name"].unique()
-# ratings_df = get_ratings(ap)
-
 app = Flask(__name__)
 app.config.from_object('config')
 
@@ -13,13 +8,9 @@ app.config.from_object('config')
 def index():
     # Recover artists selection
     ap = db()
-    artistes = ap['name'].unique()
-    # artist_names = db()
-    
-    # Recover Id
-    
-    
-    return render_template('index.html', artist_names = sorted(artistes[100:110]))
+    artists = ap['name'].unique()
+
+    return render_template('index.html', artist_names = sorted(artists[100:120]))
 
 @app.route('/results', methods = ["POST"])
 def results():
@@ -34,29 +25,25 @@ def results():
     artists_name = ap.sort_values("artistID")["name"].unique()
 
     new_user = max(user_id)+1
-    nuser_artiste = np.zeros(len(artists_name))
+    nuser_artist = np.zeros(len(artists_name))
     
     for i, artist in enumerate(r):
-        nuser_artiste[i] = ap.playCountScaled[ap["name"]==artist].mean()
+        nuser_artist[i] = ap.playCountScaled[ap["name"]==artist].mean()
 
-    ratings_df.loc[new_user] = nuser_artiste
+    ratings_df.loc[new_user] = nuser_artist
     user_id = ratings_df.index.values
     
-    # get_Xcoo
     ratings = ratings_df.fillna(0).values
     X = csr_matrix(ratings)
     Xcoo = X.tocoo()
 
-    # model = LightFM(learning_rate=0.08, learning_schedule='adadelta', loss='warp', random_state=42)
-    # model.fit(X, epochs=10, num_threads=2)
-    
     model = fit_model(X)
 
     artists_name = ap.sort_values("artistID")["name"].unique()
     n_users, n_items = ratings_df.shape
 
-    liste_idx = list(user_id)
-    idx = liste_idx.index(new_user)
+    idx_list = list(user_id)
+    idx = idx_list.index(new_user)
     scores = model.predict(idx, np.arange(n_items))
 
     top_items = artists_name[np.argsort(-scores)][:10]

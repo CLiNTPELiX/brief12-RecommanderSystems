@@ -26,8 +26,8 @@ def db():
 
 def preprocess(ap):
     pc = ap.playCount
-    play_count_scaled = (pc - pc.min()) / (pc.max() - pc.min())
-    ap = ap.assign(playCountScaled=play_count_scaled)
+    playcountscaled = (pc - pc.min()) / (pc.max() - pc.min())
+    ap = ap.assign(playCountScaled=playcountscaled)
     
     return ap
     
@@ -36,36 +36,16 @@ def get_ratings(ap):
     
     return ratings_df
 
-def get_Xcoo(ratings_df):
-    ratings = ratings_df.fillna(0).values  
-    X = csr_matrix(ratings)
-    Xcoo = X.tocoo()
-    
-    return Xcoo
 
 def fit_model(X):
-    # learn_rate = 0.05
-    nb_epochs = 10
+    learning_rate = 0.08
+    epochs = 10
+    loss = 'warp'
     num_threads = 4
-    # k = 10
-    # loss = 'warp'
-    # nb_comp = 20
-    # model = LightFM(learning_rate=learn_rate, k=k, loss=loss, 
-    #              random_state = 42, no_components=nb_comp)
-    # model.fit(X, epochs=nb_epochs, num_threads=2)
-    model = LightFM(learning_rate=0.08, learning_schedule='adadelta', loss='warp', random_state=42)
-    model.fit(X, epochs=nb_epochs, num_threads=num_threads)
+    random_state = 42
+    
+    model = LightFM(learning_rate=learning_rate, learning_schedule='adadelta', loss=loss, random_state=random_state)
+    model.fit(X, epochs=epochs, num_threads=num_threads)
     
     return model
-
-def get_recommandation(userID, model, user_ids, ap, n_reco=10):
-    artist_names = ap.sort_values("artistID")["name"].unique()
-    ratings_df = get_ratings(ap)
-    n_users, n_items = ratings_df.shape
-    liste_user_idx = list(user_ids)
-    idx = liste_user_idx.index(userID)
-    scores = model.predict(idx, np.arange(n_items))
-    top_items_pred = artist_names[np.argsort(-scores)]
-    
-    return top_items_pred
 
