@@ -1,6 +1,5 @@
 from flask import Flask, request, url_for, render_template, redirect
 from rec_app.process import *
-#from rec_app.forms import artistsearchform
 
 # ap = db ()
 # ap = preprocess(ap)
