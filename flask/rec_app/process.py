@@ -12,7 +12,6 @@ def db():
     ap = ap.rename(columns={"weight": "playCount"})
     
     artist_names = list(set(ap['name']))
-    return artist_names
 
     artist_rank = ap.groupby(['name']) \
         .agg({'userID' : 'count', 'playCount' : 'sum'}) \
@@ -45,14 +44,17 @@ def get_Xcoo(ratings_df):
     return Xcoo
 
 def fit_model(X):
-    learn_rate = 0.05
-    nb_epochs = 25
-    k = 10
-    loss = 'warp-kos'
-    nb_comp = 20
-    model = LightFM(learning_rate=learn_rate, k=k, loss=loss, 
-                 random_state = 42, no_components=nb_comp)
-    model.fit(X, epochs=nb_epochs, num_threads=2)
+    # learn_rate = 0.05
+    nb_epochs = 10
+    num_threads = 4
+    # k = 10
+    # loss = 'warp'
+    # nb_comp = 20
+    # model = LightFM(learning_rate=learn_rate, k=k, loss=loss, 
+    #              random_state = 42, no_components=nb_comp)
+    # model.fit(X, epochs=nb_epochs, num_threads=2)
+    model = LightFM(learning_rate=0.08, learning_schedule='adadelta', loss='warp', random_state=42)
+    model.fit(X, epochs=nb_epochs, num_threads=num_threads)
     
     return model
 

@@ -12,22 +12,18 @@
   <p>
     {{ selection }}
   </p> -->
-  <h2>Selection(s) : 
-    {% for select in selection %} 
-    {{select}}, 
-    {% endfor%}
-  </h1>
-  <div id ='response'>
-    <p>Recommendations: </p>
+  <h2>Recommendation Selection(s) :</h2>
     <ul>
-       {% for recomm in recommendations %}
-          <li>{{recomm}}</li>
-       {% endfor %}
-    </ul>
-  </br>
+      {% for select in selection %} 
+      <li> {{select}} </li>
+      {% endfor%}
+    </ul> 
+  <div id ='response'>
+
     <form id='return' action="/">
       <input type=submit value="Return to index">
     </form>
+  </div>
 
 
 </body>
