@@ -7,7 +7,7 @@ import pandas as pd
 def fit_model(X):
     learning_rate = 0.08
     loss = 'warp'
-    k = 8
+    k = 5
     num_threads = 4
     random_state = 42
     
