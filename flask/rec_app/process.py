@@ -4,6 +4,17 @@ from scipy.sparse import csr_matrix
 import numpy as np
 import pandas as pd
 
+def fit_model(X):
+    model = LightFM(learning_rate=0.08, learning_schedule='adadelta', loss='warp', random_state=42)
+    model.fit(X, epochs=10, num_threads=4)
+    
+    return model
+
+def get_ratings(ap):
+    ratings_df = ap.pivot(index='userID', columns='artistID', values='playCountScaled')
+    
+    return 
+
 def db():
     plays = pd.read_csv('~/Code/repositoryGIT/Bloc 2/brief12-RecommanderSystems/flask/rec_app/datasets/user_artists.dat', sep='\t')
     artists = pd.read_csv('~/Code/repositoryGIT/Bloc 2/brief12-RecommanderSystems/flask/rec_app/datasets/artists.dat', sep='\t', usecols=['id','name']) # id name url pictureURL
@@ -30,22 +41,3 @@ def preprocess(ap):
     ap = ap.assign(playCountScaled=playcountscaled)
     
     return ap
-    
-def get_ratings(ap):
-    ratings_df = ap.pivot(index='userID', columns='artistID', values='playCountScaled')
-    
-    return ratings_df
-
-
-def fit_model(X):
-    learning_rate = 0.08
-    epochs = 10
-    loss = 'warp'
-    num_threads = 4
-    random_state = 42
-    
-    model = LightFM(learning_rate=learning_rate, learning_schedule='adadelta', loss=loss, random_state=random_state)
-    model.fit(X, epochs=epochs, num_threads=num_threads)
-    
-    return model
-
